@@ -1,0 +1,28 @@
+{
+  "name": "inventory-management",
+  "version": "1.0.0",
+  "description": "Inventory management API for Stock management (A practice assignment on APIs -SharrelLaure- Project 2)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Venom-bot460/inventory-management-api.git"
+  },
+  "keywords": [],
+  "author": "Sharrel Laure",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Venom-bot460/inventory-management-api/issues"
+  },
+  "homepage": "https://github.com/Venom-bot460/inventory-management-api#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "jest": "^30.4.2",
+    "mongoose": "^9.9.1",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
+  }
+}
