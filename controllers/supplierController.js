@@ -1,30 +1,27 @@
 import Supplier from "../models/Supplier.js";
 
-export async function createSupplier(req, res) {
+export async function createSupplier(req, res, next) {
   try {
     const supplier = await Supplier.create(req.body);
 
     res.status(201).json(supplier);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);    
   }
 }
 
-export async function getSuppliers(req, res) {
+export async function getSuppliers(req, res, next) {
   try {
     const suppliers = await Supplier.find();
 
     res.status(200).json(suppliers);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);    
+   
   }
 }
 
-export async function getSupplierById(req, res) {
+export async function getSupplierById(req, res, next ) {
   try {
     const supplier = await Supplier.findById(req.params.id);
 
@@ -36,13 +33,11 @@ export async function getSupplierById(req, res) {
 
     res.status(200).json(supplier);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+   next(error);
   }
 }
 
-export async function updateSupplier(req, res) {
+export async function updateSupplier(req, res, next) {
   try {
     const supplier = await Supplier.findByIdAndUpdate(
       req.params.id,
@@ -61,13 +56,11 @@ export async function updateSupplier(req, res) {
 
     res.status(200).json(supplier);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+   next(error);
   }
 }
 
-export async function deleteSupplier(req, res) {
+export async function deleteSupplier(req, res, next ) {
   try {
     const supplier = await Supplier.findByIdAndDelete(req.params.id);
 
@@ -81,8 +74,6 @@ export async function deleteSupplier(req, res) {
       message: "Supplier deleted successfully",
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+   next(error);
   }
 }

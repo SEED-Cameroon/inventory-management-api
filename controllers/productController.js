@@ -1,30 +1,26 @@
 import Product from "../models/Product.js";
 
-export async function createProduct(req, res) {
+export async function createProduct(req, res, next) {
   try {
     const product = await Product.create(req.body);
 
     res.status(201).json(product);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 }
 
-export async function getProducts(req, res) {
+export async function getProducts(req, res, next) {
   try {
     const products = await Product.find().populate("supplierId");
 
     res.status(200).json(products);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 }
 
-export async function getProductById(req, res) {
+export async function getProductById(req, res, next) {
   try {
     const product = await Product.findById(req.params.id).populate("supplierId");
 
@@ -36,13 +32,11 @@ export async function getProductById(req, res) {
 
     res.status(200).json(product);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 }
 
-export async function updateProduct(req, res) {
+export async function updateProduct(req, res, next) {
   try {
     const product = await Product.findByIdAndUpdate(
       req.params.id,
@@ -61,13 +55,11 @@ export async function updateProduct(req, res) {
 
     res.status(200).json(product);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+   next(error);
   }
 }
 
-export async function deleteProduct(req, res) {
+export async function deleteProduct(req, res,next) {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
 
@@ -76,13 +68,20 @@ export async function deleteProduct(req, res) {
         message: "Product not found",
       });
     }
-
     res.status(200).json({
       message: "Product deleted successfully",
     });
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-}
+   next(error);
+}}
+export async function getLowStockProducts(req, res, next) {
+  try {
+    const products = await Product.find({
+      $expr: {
+        $lte: ["$stockQuantity", "$reorderThreshold"]
+      }
+    }).populate("supplierId");
+    res.status(200).json(products);
+  } catch (error) {
+    next(error);
+  }}
