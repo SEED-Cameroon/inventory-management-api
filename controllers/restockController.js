@@ -1,7 +1,7 @@
 import RestockEvent from "../models/RestockEvent.js";
 import Product from "../models/Product.js";
 
-export async function createRestock(req, res) {
+export async function createRestock(req, res, next) {
   try {
     const { productId, supplierId, quantity } = req.body;
 
@@ -31,13 +31,11 @@ export async function createRestock(req, res) {
 
     res.status(201).json(restock);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+   next(error);
   }
 }
 
-export async function getRestocks(req, res) {
+export async function getRestocks(req, res, next) {
   try {
     const restocks = await RestockEvent.find()
       .populate("productId")
@@ -45,8 +43,6 @@ export async function getRestocks(req, res) {
 
     res.status(200).json(restocks);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 }

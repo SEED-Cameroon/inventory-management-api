@@ -1,7 +1,7 @@
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
 
-export async function createOrder(req, res) {
+export async function createOrder(req, res, next) {
   try {
     const { productId, quantity } = req.body;
 
@@ -34,20 +34,16 @@ export async function createOrder(req, res) {
 
     res.status(201).json(order);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 }
 
-export async function getOrders(req, res) {
+export async function getOrders(req, res, next) {
   try {
     const orders = await Order.find().populate("productId");
 
     res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+    next(error);
   }
 }
