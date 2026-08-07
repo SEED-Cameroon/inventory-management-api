@@ -20,6 +20,20 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "Inventory Management API",
+    status: "Running",
+    version: "1.0.0",
+    endpoints: [
+      "/api/products",
+      "/api/suppliers",
+      "/api/orders",
+      "/api/restock"
+    ]
+  });
+});
+
 app.use(express.json());
 
 app.use("/api/suppliers", supplierRoutes);
