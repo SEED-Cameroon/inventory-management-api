@@ -2,6 +2,13 @@ import express from "express";
 import dotenv from "dotenv";
 import {connectDB} from "./config/db.js";
 
+import supplierRoutes from "./routes/supplierRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import restockRoutes from "./routes/restockRoutes.js";
+
+import { errorHandler } from "./middleware/errorHandler.js";
+
 dotenv.config();
 
 const app = express();
@@ -15,6 +22,11 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+app.use("/api/suppliers", supplierRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/restock", restockRoutes);
+
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
@@ -22,6 +34,9 @@ app.get("/health", (req, res) => {
 app.use((req, res) => {
   res.status(404).json({ error: `Route ${req.method} ${req.originalUrl} not found` });
 });
+
+app.use(errorHandler);
+
 async function start() {
     await connectDB();
     app.listen(PORT,() => {
@@ -32,3 +47,5 @@ async function start() {
 if (process.env.NODE_ENV !== "test") {
     start();
 }
+
+export default app;

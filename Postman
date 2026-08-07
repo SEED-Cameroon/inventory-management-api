@@ -1,0 +1,373 @@
+# Inventory Management API - Postman Collection Documentation
+
+## Base URL
+
+```
+http://localhost:3000
+```
+
+---
+
+# Supplier Requests
+
+## 1. Create Supplier
+
+Method:
+
+```
+POST
+```
+
+Endpoint:
+
+```
+/api/suppliers
+```
+
+Body:
+
+```json
+{
+  "name": "Tech World Suppliers",
+  "contactEmail": "techworld@supplier.com"
+}
+```
+
+Expected Response:
+
+```
+201 Created
+```
+
+---
+
+# Product Requests
+
+## 2. Create Product
+
+Method:
+
+```
+POST
+```
+
+Endpoint:
+
+```
+/api/products
+```
+
+Body:
+
+```json
+{
+  "name": "Gaming Keyboard",
+  "sku": "GK-001",
+  "price": 120,
+  "stockQuantity": 8,
+  "reorderThreshold": 10,
+  "supplierId": "supplier_object_id"
+}
+```
+
+Expected Response:
+
+```
+201 Created
+```
+
+---
+
+## 3. Get All Products
+
+Method:
+
+```
+GET
+```
+
+Endpoint:
+
+```
+/api/products
+```
+
+Expected Response:
+
+```
+200 OK
+```
+
+---
+
+## 4. Get Product By ID
+
+Method:
+
+```
+GET
+```
+
+Endpoint:
+
+```
+/api/products/:id
+```
+
+Example:
+
+```
+/api/products/6a74858b77d3823b95a14790
+```
+
+Expected Response:
+
+```
+200 OK
+```
+
+---
+
+## 5. Get Low Stock Products
+
+Method:
+
+```
+GET
+```
+
+Endpoint:
+
+```
+/api/products/low-stock
+```
+
+Expected Response:
+
+```
+200 OK
+```
+
+Returns products where:
+
+```
+stockQuantity <= reorderThreshold
+```
+
+---
+
+## 6. Update Product
+
+Method:
+
+```
+PUT
+```
+
+Endpoint:
+
+```
+/api/products/:id
+```
+
+Body:
+
+```json
+{
+  "price": 150,
+  "stockQuantity": 20
+}
+```
+
+Expected Response:
+
+```
+200 OK
+```
+
+---
+
+## 7. Delete Product
+
+Method:
+
+```
+DELETE
+```
+
+Endpoint:
+
+```
+/api/products/:id
+```
+
+Expected Response:
+
+```
+200 OK
+```
+
+---
+
+# Order Requests
+
+## 8. Create Order
+
+Method:
+
+```
+POST
+```
+
+Endpoint:
+
+```
+/api/orders
+```
+
+Body:
+
+```json
+{
+  "productId": "product_object_id",
+  "quantity": 4
+}
+```
+
+Successful Response:
+
+```
+201 Created
+```
+
+The product stock decreases automatically.
+
+---
+
+## 9. Insufficient Stock Test
+
+Example:
+
+Product stock:
+
+```
+2
+```
+
+Request:
+
+```json
+{
+  "productId": "product_object_id",
+  "quantity": 5
+}
+```
+
+Expected Response:
+
+```
+409 Conflict
+```
+
+Response:
+
+```json
+{
+  "message": "Insufficient stock"
+}
+```
+
+---
+
+# Restock Requests
+
+## 10. Create Restock
+
+Method:
+
+```
+POST
+```
+
+Endpoint:
+
+```
+/api/restock
+```
+
+Body:
+
+```json
+{
+  "productId": "product_object_id",
+  "supplierId": "supplier_object_id",
+  "quantity": 10
+}
+```
+
+Expected Response:
+
+```
+201 Created
+```
+
+Product stock increases automatically.
+
+---
+
+## 11. Get Restock History
+
+Method:
+
+```
+GET
+```
+
+Endpoint:
+
+```
+/api/restock
+```
+
+Expected Response:
+
+```
+200 OK
+```
+
+---
+
+# Testing Checklist
+```
+1. Server starts successfully
+```
+ ```
+ 2. MongoDB connects
+ ```
+ ```
+3. Supplier creation works
+ ```
+```
+4. Product creation works
+ ```
+ ```
+5. Product CRUD works
+ ```
+ ```
+6. Orders reduce stock
+```
+```
+7. Failed orders return 409
+```
+```
+8. Restocks increase stock
+ ```
+ ```
+9. Low-stock endpoint works
+ ```
+ ```
+10. Jest tests pass
+ ```
+ ```
+11. Postman requests saved
+```
